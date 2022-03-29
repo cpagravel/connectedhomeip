@@ -15,7 +15,7 @@
  *    limitations under the License.
  */
 
-const { asLowerCamelCase }  = require('../../../../src/app/zap-templates/templates/app/helper.js');
+const { asUpperCamelCase, asLowerCamelCase } = require('../../../../src/app/zap-templates/templates/app/helper.js');
 const { isTestOnlyCluster } = require('../../../../src/app/zap-templates/common/simulated-clusters/SimulatedClusters.js');
 
 function utf8StringLength(str)
@@ -47,8 +47,31 @@ function asPropertyValue(options)
   return name;
 }
 
+async function asDecodableType()
+{
+  const options = { 'hash' : { ns : this.cluster } };
+  let type;
+  if ('commandObject' in this) {
+    type = this.commandObject.responseName;
+  } else if ('attributeObject' in this) {
+    type            = this.attributeObject.type;
+    this.isArray    = this.attributeObject.isArray;
+    this.isOptional = this.attributeObject.isOptional;
+    this.isNullable = this.attributeObject.isNullable;
+  } else if ('eventObject' in this) {
+    type = this.eventObject.type;
+  } else {
+    throw new Error("Unsupported decodable type");
+  }
+
+  if (isTestOnlyCluster(this.cluster)) {
+    return `chip::app::Clusters::${asUpperCamelCase(this.cluster)}::Commands::${asUpperCamelCase(type)}::DecodableType`;
+  }
+}
+
 //
 // Module exports
 //
 exports.utf8StringLength = utf8StringLength;
 exports.asPropertyValue  = asPropertyValue;
+exports.asDecodableType  = asDecodableType;

@@ -1,0 +1,33 @@
+{{~#*inline "maybeReturnOnUnsupported"}}
+{{~#if optional}}
+    if (IsUnsupported(status.mStatus))
+    {
+        return;
+    }
+{{/if~}}
+{{/inline~}}
+
+{{~#*inline "maybeContinueWithoutWaitingOnDone"}}
+    {{~#if isWaitForReport}}shouldContinue = true;{{/if~}}
+    {{~#if (isTestOnlyCluster cluster)}}shouldContinue = true;{{/if~}}
+{{/inline~}}
+
+{{! --- Test Step Response Content --}}
+{{#if response.error}}
+    VerifyOrReturn(CheckValue("status", chip::to_underlying(status.mStatus), {{response.error}}));
+{{else}}
+    {{>maybeReturnOnUnsupported}}
+    VerifyOrReturn(CheckValue("status", chip::to_underlying(status.mStatus), {{response.error}}));
+    {{#if hasSpecificResponse}}
+    {
+        {{asDecodableType}} value;
+        VerifyOrReturn(CheckDecodeValue(chip::app::DataModel::Decode(*data, value)));
+        {{#chip_tests_item_response_parameters}}
+            {{>maybeCheckExpectedValue}}
+            {{>maybeCheckExpectedConstraints}}
+            {{>maybeSaveAs}}
+        {{/chip_tests_item_response_parameters}}
+    }
+    {{/if}}
+    {{>maybeContinueWithoutWaitingOnDone}}
+{{/if}}
