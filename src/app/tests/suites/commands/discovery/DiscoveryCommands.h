@@ -70,7 +70,7 @@ public:
     ~DiscoveryCommands() override{};
 
     virtual void OnResponse(const chip::app::StatusIB & status, chip::TLV::TLVReader * data) = 0;
-    virtual CHIP_ERROR ContinueOnChipMainThread(CHIP_ERROR err) = 0;
+    virtual CHIP_ERROR ContinueOnChipMainThread(CHIP_ERROR err)                              = 0;
 
     CHIP_ERROR FindCommissionable();
     CHIP_ERROR FindCommissionableByShortDiscriminator(uint64_t value);
