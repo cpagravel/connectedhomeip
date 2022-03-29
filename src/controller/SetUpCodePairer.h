@@ -66,6 +66,8 @@ public:
     void SetBleLayer(Ble::BleLayer * bleLayer) { mBleLayer = bleLayer; };
 #endif // CONFIG_NETWORK_LAYER_BLE
 
+    static void OnSessionEstablishmentTimeoutCallback(System::Layer * layer, void * context);
+
 private:
     CHIP_ERROR Connect(SetupPayload & paload);
     CHIP_ERROR StartDiscoverOverBle(SetupPayload & payload);

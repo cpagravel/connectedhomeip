@@ -202,5 +202,14 @@ void SetUpCodePairer::NotifyCommissionableDeviceDiscovered(const Dnssd::Discover
     OnDeviceDiscovered(params);
 }
 
+void SetUpCodePairer::OnSessionEstablishmentTimeoutCallback(System::Layer * layer, void * context)
+{
+    SetUpCodePairer * pairer = static_cast<SetUpCodePairer *>(context);
+    LogErrorOnFailure(pairer->StopConnectOverBle());
+    LogErrorOnFailure(pairer->StopConnectOverIP());
+    LogErrorOnFailure(pairer->StopConnectOverSoftAP());
+    pairer->mCommissioner->OnSessionEstablishmentError(CHIP_ERROR_TIMEOUT);
+}
+
 } // namespace Controller
 } // namespace chip
