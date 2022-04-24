@@ -26,7 +26,7 @@
 
 #include <kernel.h>
 
-LOG_MODULE_DECLARE(app, CONFIG_MATTER_LOG_LEVEL);
+LOG_MODULE_DECLARE(app);
 
 #if defined(PW_RPC_ATTRIBUTE_SERVICE) && PW_RPC_ATTRIBUTE_SERVICE
 #include "pigweed/rpc_services/Attributes.h"
