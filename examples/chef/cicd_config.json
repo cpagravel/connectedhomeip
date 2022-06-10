@@ -1,0 +1,10 @@
+{
+    "ci_allow_list": [
+        "rootnode_dimmablelight_gY80DaqEUL"
+    ],
+    "cd_platforms": {
+        "linux": "linux_x86",
+        "esp32": "esp32-m5stack",
+        "nrfconnect": "nrf-nrf52840dk"
+    }
+}
